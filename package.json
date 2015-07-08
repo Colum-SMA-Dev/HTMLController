@@ -1,8 +1,8 @@
 {
-  "name": "HTMLController",
+  "name": "html-controller",
   "version": "1.0.0",
   "description": "A controller that mediates communcations with a [MediaHub](https://github.com/Colum-SMA-Dev/MediaHub) instance for Browser/HTML based clients.",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "test": "mocha"
   },
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/Colum-SMA-Dev/HTMLController.git"
   },
-  "author": "",
+  "author": "Matt Schick <matt@schickm.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Colum-SMA-Dev/HTMLController/issues"
