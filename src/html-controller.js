@@ -1,5 +1,8 @@
 'use strict';
 
+var debug = require('debug')('html-controller');
+var EventEmitter = require('events').EventEmitter;
+var util = require('util');
 var socketIo = require('socket.io');
 var socketIoClient = require('socket.io-client');
 
@@ -9,35 +12,49 @@ function createApplication () {
     return new HTMLController();
 }
 
+util.inherits(HTMLController, EventEmitter);
+
 function HTMLController () {
 
 }
 
 HTMLController.prototype.listen = function(port, hubUrl, hubPassword) {
+    var self = this;
+
     // establish connection with hub
     var hub = socketIoClient(hubUrl);
     hub.on('connect', function() {
+        debug('connection to hub established');
         hub.emit('auth', {password: hubPassword}, function(err) {
             if (err) {
                 throw new Error('Authentication with hub failed: ' + err);
             }
 
+            self.hub = hub;
+            debug('auth successful with hub');
+
             // listen for client connections
             var io = socketIo(port);
 
             io.on('connection', function(socket) {
+                debug('client connected');
+                
+                self.emit('connection', socket);
 
-                function passMessageToHub (messageName) {
+                // pass certain messages from client directly to hub
+                [
+                    'loadScene',
+                    'listScenes',
+                    'register',
+                    'sendCommand'
+                ].forEach(function (messageName) {
                     socket.on(messageName, function() {
                         var args = Array.prototype.slice.call(arguments, 0);
                         args.unshift(messageName);
                         hub.emit.apply(hub, args);
                     });
-                }
+                });
                 
-                passMessageToHub('loadScene');
-                passMessageToHub('listScenes');
-
                 socket.on('capabilities', function(data) {
 
                 });
