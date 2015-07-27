@@ -1,5 +1,5 @@
 {
-  "name": "html-controller",
+  "name": "media-frameworks-html-controller",
   "version": "1.0.0",
   "description": "A controller that mediates communcations with a [MediaHub](https://github.com/Colum-SMA-Dev/MediaHub) instance for Browser/HTML based clients.",
   "main": "index.js",
