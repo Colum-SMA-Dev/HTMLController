@@ -5,6 +5,9 @@ var EventEmitter = require('events').EventEmitter;
 var util = require('util');
 var socketIo = require('socket.io');
 var socketIoClient = require('socket.io-client');
+var http = require('http');
+var express = require('express');
+var cors = require('cors');
 
 module.exports = createApplication;
 
@@ -34,7 +37,11 @@ HTMLController.prototype.listen = function(port, hubUrl, hubPassword) {
             debug('auth successful with hub');
 
             // listen for client connections
-            var io = socketIo(port);
+
+            var app = express(),
+                server = http.Server(app),
+                io = socketIo(server);
+            
             io.set('origins', '*:*');
             io.on('connection', function(socket) {
                 debug('client connected');
@@ -53,6 +60,8 @@ HTMLController.prototype.listen = function(port, hubUrl, hubPassword) {
                     });
                 });
             });
+
+            server.listen(port);
         });
     });
 
