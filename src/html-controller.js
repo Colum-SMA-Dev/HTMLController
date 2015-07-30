@@ -44,19 +44,13 @@ HTMLController.prototype.listen = function(port, hubUrl, hubPassword) {
                 // pass certain messages from client directly to hub
                 [
                     'loadScene',
-                    'listScenes',
-                    'register',
-                    'sendCommand'
+                    'listScenes'
                 ].forEach(function (messageName) {
                     socket.on(messageName, function() {
                         var args = Array.prototype.slice.call(arguments, 0);
                         args.unshift(messageName);
                         hub.emit.apply(hub, args);
                     });
-                });
-                
-                socket.on('capabilities', function(data) {
-
                 });
             });
         });
