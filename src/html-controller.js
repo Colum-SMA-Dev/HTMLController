@@ -35,7 +35,7 @@ HTMLController.prototype.listen = function(port, hubUrl, hubPassword) {
 
             // listen for client connections
             var io = socketIo(port);
-
+            io.set('origins', '*:*');
             io.on('connection', function(socket) {
                 debug('client connected');
                 
